@@ -1,11 +1,10 @@
-import * as fs from 'fs'
 import { ethers } from "hardhat";
-import { mimcSpongecontract } from 'circomlibjs'
 
 const hre = require("hardhat");
 
-const SEED = "mimcsponge";
-const TREE_LEVELS = 20;
+const WORLD_ID_ADDRESS = "0x38f6e15d86574b2d12ddc119b411C7027bcE349c";
+const APP_ID = "test"
+const ACTION_ID = "test"
 
 function sleep(s) {
   return new Promise(resolve => setTimeout(resolve, s*1000));
@@ -27,28 +26,15 @@ async function verifyContract(contractAddress, args) {
 
 }
 
+
 async function main() {
   const [deployer] = await ethers.getSigners();
-  const MiMCSponge = new ethers.ContractFactory(mimcSpongecontract.abi, mimcSpongecontract.createCode(SEED, 220), deployer)
-  const mimcsponge = await MiMCSponge.deploy()
-  console.log(`MiMC sponge hasher address: ${mimcsponge.address}`)
 
-  const Verifier = await ethers.getContractFactory("Verifier");
-  const verifier = await Verifier.deploy();
-  console.log(`Verifier address: ${verifier.address}`)
-  await verifyContract(verifier.address, []);
-
-  const ZKTreeVote = await ethers.getContractFactory("ZKTreeVote");
-  const zktreevote = await ZKTreeVote.deploy(TREE_LEVELS, mimcsponge.address, verifier.address, 4);
-  console.log(`ZKTreeVote address: ${zktreevote.address}`)
-  await verifyContract(zktreevote.address, [TREE_LEVELS, mimcsponge.address, verifier.address, 4]);
-
-
-  fs.writeFileSync("static/contracts.json", JSON.stringify({
-    mimc: mimcsponge.address,
-    verifier: verifier.address,
-    zktreevote: zktreevote.address
-  }))
+  const Wote = await ethers.getContractFactory("Wote");
+  const vote = await Wote.deploy(WORLD_ID_ADDRESS, APP_ID, ACTION_ID);
+  console.log(`Deployer address: ${deployer.address}`)
+  console.log(`Wote address: ${vote.address}`)
+  await verifyContract(vote.address, [WORLD_ID_ADDRESS, APP_ID, ACTION_ID]);
 }
 
 main().catch((error) => {

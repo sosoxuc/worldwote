@@ -4,10 +4,14 @@ import { config as dotEnvConfig } from "dotenv";
 dotEnvConfig();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.17",
+  solidity: "0.8.21",
   networks: {
     mumbai: {
       url: process.env.MUMBAI,
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY]
+    },
+    goerli: {
+      url: process.env.GOERLI_URL,
       accounts: [process.env.ACCOUNT_PRIVATE_KEY]
     },
   },
@@ -16,7 +20,7 @@ const config: HardhatUserConfig = {
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
   },
   etherscan: {
-    apiKey: process.env.MUMBAI_API_KEY
+    apiKey: process.env.ETHERSCAN_API_KEY
   },
 };
 
