@@ -3,8 +3,8 @@ import { ethers } from "hardhat";
 const hre = require("hardhat");
 
 const WORLD_ID_ADDRESS = "0x38f6e15d86574b2d12ddc119b411C7027bcE349c";
-const APP_ID = "test"
-const ACTION_ID = "test"
+const APP_ID = "app_staging_8e51b49daa766cfd178b3c6495f0d61a"
+const ACTION_ID = "ioseb-x"
 
 function sleep(s) {
   return new Promise(resolve => setTimeout(resolve, s*1000));
